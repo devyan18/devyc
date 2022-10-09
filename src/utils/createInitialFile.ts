@@ -14,8 +14,6 @@ const createInitialFile = (type:string, arch: string, lang: boolean) => {
     modules: []
   };
 
-  console.log(path.join(process.cwd(), fileName));
-
   fs.writeFileSync(path.join(process.cwd(), fileName), JSON.stringify(data, null, 2));
 };
 

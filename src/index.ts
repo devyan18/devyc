@@ -8,7 +8,6 @@ import { setNewModuleInConfigFile } from "./utils/setNewModuleInConfigFile";
 import { Command } from "commander";
 
 function main (): void {
-  console.log(process.cwd());
   const program = new Command();
 
   program
