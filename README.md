@@ -13,7 +13,7 @@ npm install -g devyc
 ```
 
 
-##### Para comenzar un proyecto con DEVYC puedes usar el comando:
+##### To start a project with DEVYC you can use the command::
 
 ```
 devyc init
