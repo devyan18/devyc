@@ -102,5 +102,5 @@
   },
 
   // ignore files
-  "exclude": ["node_modules", "dist", "wea", "test_folder"]
+  "exclude": ["node_modules", "dist", "test_folder"]
 }
