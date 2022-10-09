@@ -1,0 +1,10 @@
+{
+  "type": "express",
+  "dir": "./test_folder",
+  "architecture": "clean",
+  "typescript": true,
+  "modules": [
+    "shared",
+    "person"
+  ]
+}
