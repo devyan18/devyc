@@ -1,20 +1,24 @@
 import fs from "fs";
 import path from "path";
-import { Projects } from "../actions/init";
 import { getConfigFileName } from "./gettersFromConfigFile";
 
-const createInitialFile = (type:string, arch: string, lang: boolean) => {
+const createInitialFile = (fw:string, arch: string, lang: string, ptrn: string, mod: Array<string>) => {
   const fileName = getConfigFileName();
 
   const data = {
-    type: type === Projects.Express ? "express" : "react",
+    framework: fw,
     dir: "./",
     architecture: arch,
     typescript: lang,
-    modules: []
+    pattern: ptrn,
+    modules: mod
   };
 
   fs.writeFileSync(path.join(process.cwd(), fileName), JSON.stringify(data, null, 2));
+
+  console.log(JSON.stringify(data, null, 2));
+
+  console.log("\n\n✅ init parameters writed.");
 };
 
 export default createInitialFile;

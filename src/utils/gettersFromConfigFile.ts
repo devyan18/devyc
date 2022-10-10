@@ -6,6 +6,13 @@ export function getConfigFileName ():string {
   return CONFIG_FILENAME;
 }
 
+export function getFramework (): string {
+  const fileName = getConfigFileName();
+  const configFile = fs.readFileSync(fileName);
+
+  return JSON.parse(configFile.toString()).framework;
+}
+
 export function getRootDir (): string {
   const configFile = getConfigFileName();
 
@@ -22,10 +29,10 @@ export function getModules () {
   return modules;
 }
 
-export function getLang () {
+export function getLang ():string {
   const configFile = getConfigFileName();
 
-  return JSON.parse(fs.readFileSync(configFile).toString()).typescript;
+  return JSON.parse(fs.readFileSync(configFile).toString()).language;
 }
 
 export function getArch () {
@@ -34,4 +41,12 @@ export function getArch () {
   const data = fs.readFileSync(configFile);
   const arch = JSON.parse(data.toString()).architecture;
   return arch;
+}
+
+export function getPattern () {
+  const configFile = getConfigFileName();
+
+  const data = fs.readFileSync(configFile);
+  const pattern = JSON.parse(data.toString()).pattern;
+  return pattern;
 }

@@ -28,16 +28,16 @@ export default async function proptCreateAllModules () {
 
   if (getLang()) {
     fs.existsSync(path.join(helpersPath, "sayHi.ts")) || fs.writeFileSync(path.join(helpersPath, "sayHi.ts"), `const sayHi = (): void => {
-  console.log('Hello World')
-}
+    console.log('Hello World')
+  }
 
-export default sayHi`);
+  export default sayHi`);
   } else {
     fs.existsSync(path.join(helpersPath, "sayHi.js")) || fs.writeFileSync(path.join(helpersPath, "sayHi.js"), `const sayHi = () => {
-  console.log('Hello World')
-}
+    console.log('Hello World')
+  }
 
-export default sayHi`);
+  export default sayHi`);
   }
 
   const modulesPath = path.join(getRootDir(), "modules");

@@ -1,32 +1,41 @@
 import inquirer from "inquirer";
 
 export enum Projects {
-  Express = "Create project for Node/Express API",
-  React = "Create project for React application.",
+  EXPRESS = "express",
+  FASTIFY = "fastify",
+  // REACT = "Create project for React application.",
 }
 
-enum Commands {
-  CLEAN = "clean",
-  // MVC = "mvc",
-  // MVVM = "mvvm",
-}
-
-enum Languages {
+export enum Languages {
   TYPESCRIPT = "typescript",
   JAVASCRIPT = "javascript",
 }
 
+enum Architectures {
+  LAYERED = "layered",
+  MVC = "mvc",
+  HEXAGONAL = "hexagonal",
+}
+
+enum Patterns {
+  REPOSITORY = "repository",
+  REST = "rest",
+  FACTORY = "factory",
+}
+
 export const defaultConfig = {
-  type: Projects.Express,
-  arch: Commands.CLEAN,
-  lang: true
+  framework: Projects.EXPRESS,
+  arch: Architectures.MVC,
+  lang: Languages.JAVASCRIPT,
+  pattern: Patterns.REST,
+  modules: []
 };
 
 export default async function promptInitialConfig () {
   const typeQuest = await inquirer.prompt({
     type: "list",
-    name: "type",
-    message: "What would you like to create?",
+    name: "framework",
+    message: "What framework are you using?",
     choices: Object.values(Projects)
   });
 
@@ -34,7 +43,7 @@ export default async function promptInitialConfig () {
     type: "list",
     name: "arch",
     message: "Select the architecture you want to use",
-    choices: Object.values(Commands)
+    choices: Object.values(Architectures)
   });
 
   const langQuest = await inquirer.prompt({
@@ -44,9 +53,40 @@ export default async function promptInitialConfig () {
     choices: Object.values(Languages)
   });
 
-  return {
-    type: typeQuest.type,
-    arch: archQuest.arch,
-    lang: langQuest.lang === "typescript"
-  };
+  const patternQuest = await inquirer.prompt({
+    type: "list",
+    name: "pattern",
+    message: "Select the pattern you want to use",
+    choices: Object.values(Patterns)
+  });
+
+  return inquirer.prompt({
+    type: "confirm",
+    name: "confirm",
+    message: "Do you want to use default modules?"
+  }).then(async (confirm) => {
+    if (confirm) {
+      const checks = await inquirer.prompt({
+        type: "checkbox",
+        name: "modules",
+        message: "Select some modules or leave empty",
+        choices: ["users", "auth", "telegram", "whatsapp"]
+      });
+
+      return {
+        framework: typeQuest.framework,
+        arch: archQuest.arch,
+        lang: langQuest.lang,
+        pattern: patternQuest.pattern,
+        modules: checks.modules
+      };
+    }
+    return {
+      framework: typeQuest.framework,
+      arch: archQuest.arch,
+      lang: langQuest.lang,
+      pattern: patternQuest.pattern,
+      modules: []
+    };
+  });
 }

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import fs from "fs";
 import promptInitialConfig, { defaultConfig } from "./actions/init";
 import proptCreateAllModules from "./actions/create";
 import proptAgregateNewModule from "./actions/add";
@@ -12,26 +13,40 @@ function main (): void {
 
   program
     .name("devyc")
-    .description("CLI to some JavaScript string utilities")
-    .version("0.8.0");
+    .description("CLI to some JavaScript and Typescript projects")
+    .version("0.0.1");
+
+  program
+    .option("-v", "Display the program version")
+    .action(() => {
+      const file = JSON.parse(fs.readFileSync("package.json", "utf8"));
+      console.log("✅", file.version);
+    });
 
   program
     .command("init")
-    .description("Start new devy project")
+    .description("Start new project")
     .option("-y, --yes", "Init project with defaults configurations (CLI mode only)", false)
     .action((cmdObj) => {
+      console.log("⚙️  devyc is running...\n");
       if (cmdObj.yes) {
-        createInitialFile(defaultConfig.type, defaultConfig.arch, defaultConfig.lang);
+        createInitialFile(
+          defaultConfig.framework,
+          defaultConfig.arch,
+          defaultConfig.lang,
+          defaultConfig.pattern,
+          defaultConfig.modules
+        );
       } else {
         promptInitialConfig().then((config) => {
-          createInitialFile(config.type, config.arch, config.lang);
+          createInitialFile(config.framework, config.arch, config.lang, config.pattern, config.modules);
         });
       }
     });
 
   program
     .command("create")
-    .description("Add a new feature to your project")
+    .description("Create new module(s)")
     .action(() => {
       proptCreateAllModules();
     });
