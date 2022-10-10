@@ -5,6 +5,8 @@ import { serviceExampleJs, serviceExampleTs } from "../examples/services";
 import { settingsExample } from "../examples/settings";
 import { entityCreator } from "../examples/interface";
 import { modelCreatorJs, modelCreatorTs } from "../examples/model";
+import { testExampleJs, testExampleTs } from "../examples/tests";
+import { schemaExample } from "../examples/schema";
 
 export function createController (dirname: string, type: boolean, module: string) {
   if (type) {
@@ -47,5 +49,25 @@ export function createModel (dirname: string, type: boolean, module: string) {
   } else {
     const localPath = path.join(dirname, `${module}.model.js`);
     fs.existsSync(localPath) || fs.writeFileSync(localPath, modelCreatorJs(module));
+  }
+}
+
+export function createTest (dirname: string, type: boolean, module: string) {
+  if (type) {
+    const localPath = path.join(dirname, `${module}.test.ts`);
+    fs.existsSync(localPath) || fs.writeFileSync(localPath, testExampleTs(module));
+  } else {
+    const localPath = path.join(dirname, `${module}.test.js`);
+    fs.existsSync(localPath) || fs.writeFileSync(localPath, testExampleJs(module));
+  }
+}
+
+export function createSchema (dirname: string, type: boolean, module: string) {
+  if (type) {
+    const localPath = path.join(dirname, `${module}.schema.ts`);
+    fs.existsSync(localPath) || fs.writeFileSync(localPath, schemaExample(module));
+  } else {
+    const localPath = path.join(dirname, `${module}.schema.js`);
+    fs.existsSync(localPath) || fs.writeFileSync(localPath, schemaExample(module));
   }
 }

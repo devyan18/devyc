@@ -1,6 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { createController, createEntity, createModel, createService } from "./filesCreator";
+import {
+  createController,
+  createEntity,
+  createModel,
+  createSchema,
+  createService,
+  createTest
+} from "./filesCreator";
 import { getArch, getLang } from "./gettersFromConfigFile";
 
 function folderCreator (localPath: string) {
@@ -14,20 +21,27 @@ const cleanFolders = [
   "validations",
   "utilities",
   "interfaces",
-  "repositories"
+  "repositories",
+  "tests"
 ];
 
 export default function createFoldersForModule (dirname: string, module: string) {
   const arch = getArch();
 
   if (arch === "clean") {
-    for (const folder of cleanFolders) {
-      folderCreator(path.join(dirname, folder));
-    }
+    try {
+      for (const folder of cleanFolders) {
+        folderCreator(path.join(dirname, folder));
+      }
 
-    createController(path.join(dirname, "controllers"), getLang(), module);
-    createModel(path.join(dirname, "models"), getLang(), module);
-    createEntity(path.join(dirname, "interfaces"), getLang(), module);
-    createService(path.join(dirname, "services"), getLang(), module);
+      createTest(path.join(dirname, "tests"), getLang(), module);
+      createModel(path.join(dirname, "models"), getLang(), module);
+      createService(path.join(dirname, "services"), getLang(), module);
+      createEntity(path.join(dirname, "interfaces"), getLang(), module);
+      createSchema(path.join(dirname, "validations"), getLang(), module);
+      createController(path.join(dirname, "controllers"), getLang(), module);
+    } catch (error) {
+      console.log("Error creating folders for module: ", module);
+    }
   }
 }
